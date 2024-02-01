@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -9,21 +11,36 @@ public class GuessTheNumberGame {
     public GuessTheNumberGame() {
         Random random = new Random();
         this.targetNumber = random.nextInt(100) + 1;
-        System.out.println(" Number to guess " + this.targetNumber + "\n");
+        System.out.println(" Number to guess: " + this.targetNumber + "\n");
     }
 
     public void checkGuess(Player player) {
-        int guess = player.makeGuess();
-        System.out.println("\n" + " --- Round: " + player.getName() + " ---");
-        System.out.println( player.getName() + ", enter your guess: " + guess);
+        int guess;
+        System.out.println("\n --- Round: " + player.getName() + " ---");
+
+        if (player instanceof HumanPlayer) {
+            guess = player.makeGuess();
+        } else {
+            guess = player.makeGuess();
+           System.out.println(player.getName() + ", enter your guess: " + guess);
+
+        }
+
+
+
+        //System.out.println( player.getName() + ", enter your guessYYYY: " + guess);
+
+        player.incrementAttempts(); // Incrementa el contador de intentos
+
         if (guess == targetNumber) {
-            System.out.println("¡Congratulations!!!, " + player.getName() + " you guessed the number.");
+            System.out.println("¡Congratulations!!!, " + player.getName() + " you guessed the number!!!\n");
             System.out.print("Attempts: ");
             printArray(player.getGuesses());
+            System.out.println("Total Attempts: [" + player.getNumberOfAttempts() + "]");
 
             adivino = true;
         } else {
-            System.out.println("Keep on trying, " + player.getName() + "!!!" + "\n");
+            printDistanceMessage(guess);
         }
     }
     private void printArray(int[] array) {
@@ -36,16 +53,24 @@ public class GuessTheNumberGame {
         }
         System.out.println("]");
     }
+    private void printDistanceMessage(int guess) {
+        int difference = Math.abs(targetNumber - guess);
+
+        if (difference <= 3) {
+            System.out.println("That was very close, keep on trying!!!");
+        } else {
+            System.out.println("Keep on trying, you are far from the number!!!");
+        }
+        System.out.println();
+    }
     public void iniciarJuego() {
         HumanPlayer humanPlayer = new HumanPlayer();
-        ComputerPlayer computerPlayer = new ComputerPlayer();
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("--- Welcome to the Guess The NUMBER Game!!! ---" );
         System.out.print(" Enter your name: ");
-        String playerName = scanner.next();
-        humanPlayer.setName(playerName);
-
+        String name = scanner.next();
+        humanPlayer.setName(name);
+        ComputerPlayer computerPlayer = new ComputerPlayer();
         computerPlayer.setName("Computer player");
 
 

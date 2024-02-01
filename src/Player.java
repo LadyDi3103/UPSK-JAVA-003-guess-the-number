@@ -1,6 +1,8 @@
+
 abstract  public class Player {
     private String name;
     private int[] guesses= new int[0];
+    private int numberOfAttempts = 0;
     public Player() {
     }
     public String getName() {
@@ -18,6 +20,14 @@ abstract  public class Player {
     public void setGuesses(int[] guesses) {
         this.guesses = guesses;
     }
+
+    public int getNumberOfAttempts() {
+        return numberOfAttempts;
+    }
+    public void incrementAttempts() {
+        numberOfAttempts++;
+    }
     abstract public int makeGuess();
 
-}
+    }
+
